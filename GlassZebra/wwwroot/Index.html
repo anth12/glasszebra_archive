@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html ng-app="GlassZebraApp">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="Assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="Assets/css/app.css" rel="stylesheet" />
+    <link href="Assets/css/drawingboard.css" rel="stylesheet" />
+
+    <script src="Assets/js/jquery.js"></script>
+    <script src="Assets/js/angular.min.js"></script>
+    <script src="Assets/js/drawingboard.js"></script>
+    <script src="Assets/js/app.js"></script>
+</head>
+<body ng-controller="MainController">
+
+    <div ng-if="!started" class="container">
+        <br/>
+        <button class="btn btn-success" ng-click="NewGame()">
+            New Game
+        </button>
+        <button class="btn btn-secondary" ng-click="WatchGame()">
+            Watch Game
+        </button>
+        <button class="btn btn-primary" ng-click="JoinGame()">
+            Join Game
+        </button>
+    </div>
+
+    <div ng-if="started && playing" ng-controller="PlayController">
+        
+        <div id="canvasBoard"></div>
+        
+        <div class="game-buttons">
+            
+            <button class="show-question" ng-click="showQuestion()"></button>
+            <button class="skip-round" ng-click="nextQuestion()"></button>
+            <button class="round-complete" ng-click="roundEnding = true"></button>
+            <h4 class="current-player">
+                {{ game.currentPlayer }}
+                <br/>
+                {{ game.currentDificulty }}
+            </h4>
+
+            <h4></h4>
+        </div>
+
+        <div class="modal" style="display: block" ng-if="questionVisible">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+
+                        <h1 class="text-primary">{{ game.currentQuestion }}</h1>
+                        <h2 class="text-secondary"><i>{{ game.currentDificulty }}</i></h2>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" ng-click="hideQuestion()">Ok!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" style="display: block" ng-if="roundEnding">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Who Won the round?</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <button ng-repeat="player in players" ng-show="player.name != game.currentPlayer" class="btn btn-success btn-lg" ng-click="roundWon(player)">
+                            {{ player.name }}
+                        </button>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" ng-click="cancelEnd()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div ng-if="started && watching"  ng-controller="WatchController">
+        
+        <div class="container" ng-if="!setup">
+            <ul class="list-unstyled">
+                <li ng-repeat="player in players">
+                    <input type="text" ng-model="player.name" placeholder="Player name" class=""/>
+                </li>
+                <li>
+                    <button class="btn btn-primary" ng-click="addPlayer()">Add Player</button>
+                </li>
+            </ul>
+
+            <br/>
+            <button class="btn btn-success" ng-click="startGame()">
+                Start Game
+            </button>
+        </div>
+        <div class="" ng-if="setup">
+
+            <img src="{{ imageSrc }}" style="max-height: 100vh; max-width: 100vw;" />
+
+            <div class="game-summary">
+
+                <table class="table table-inverse">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="player in game.players" ng-class="{'table-active': player.name == game.currentPlayer}">
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.score }}</td>
+                            <td>
+                                <img src="Assets/img/003-paint-brush.png" ng-if="player.name == game.currentPlayer" height="20px" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>{{ game.currentDificulty }}</h4>
+
+                <table class="table table-inverse table-sm">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Category</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="category in categories" ng-class="{'table-active': category == game.currentDificulty}">
+                            <td>{{ category }}</td>
+                            <td>
+                                <input type="checkbox"
+                                       value="{{category}}"
+                                       ng-checked="game.dificulties.indexOf(category) > -1"
+                                       ng-click="toggleSelection(category)">
+                            </td>
+                            <td>
+                                <img src="Assets/img/003-paint-brush.png" ng-if="category == game.currentDificulty" height="20px" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    <i>
+                        {{ baseUrl }}
+                    </i>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

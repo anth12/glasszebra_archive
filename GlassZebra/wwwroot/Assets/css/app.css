@@ -1,0 +1,58 @@
+﻿#canvasBoard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.game-summary {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+.game-buttons {
+    position: absolute;
+    right: 0;
+}
+
+.round-complete {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    background: none;
+    border: none;
+    background-image: url('../img/002-checked.png');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat
+}
+.skip-round {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    background: none;
+    border: none;
+    background-image: url('../img/001-next.png');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat
+}
+.show-question {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    background: none;
+    border: none;
+    background-image: url('../img/008-eye.png');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat
+}
+
+
+.current-player {
+    float: left;
+}
